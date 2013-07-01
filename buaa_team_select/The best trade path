@@ -1,0 +1,47 @@
+#include <iostream>
+#include <iomanip>
+#include <fstream>
+#include <cmath>
+#include <algorithm>
+#include <cstdlib>
+#include <string>
+#define MAX_N 150
+#define oo 1000010 * 100
+using namespace std;
+int dis[MAX_N][MAX_N];
+int T, N, M;
+int main() {
+  cin >> T;
+	int count, i, j, k;
+	for (count = 0; count < T; count++) {
+		cin >> N >> M;
+		for (i = 1; i <= N ;i++) {
+			for (j = 1; j <= N; j++) {
+				dis[i][j] = oo;
+			}
+		}
+		for (i = 0; i < M; i++) {
+			int a, b, d;
+			cin >> a >> b >> d;
+			if (d < dis[a][b]) dis[a][b] = d;
+		}
+		for (i = 1; i <= N; i++) {
+			for (j = 1; j <= N; j++) {
+				for (k = 1; k <= N; k++) {
+					if (dis[j][k] > dis[j][i] + dis[i][k]) {
+						dis[j][k] = dis[j][i] + dis[i][k];
+					}
+					if (dis[k][j] > dis[k][i] + dis[i][j]) {
+						dis[k][j] = dis[k][i] + dis[i][j];
+					}
+				}
+			}
+		}
+		int min_self = oo;
+		for (i = 1; i <= N; i++) {
+			if (dis[i][j] != oo && dis[i][i] < min_self) min_self = dis[i][i];
+		}
+		if (min_self == oo) cout << -1 << endl;
+		else cout << min_self << endl;
+	}
+}
