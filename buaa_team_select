@@ -1,0 +1,46 @@
+#include<iostream>
+#include<algorithm>
+#include<cstdlib>
+#include<cstdio>
+#include<cstring>
+#define oo 1000000
+using namespace std;
+int wait_zero_start_time[110] = {0};
+int dp[110][60] = {0};
+int arrive_time[30];
+int main()
+{
+        int T;
+        cin>>T;
+        while(T--)
+        {
+                int n, m, p, i, j, k;
+                cin>>n>>m>>p;
+        arrive_time[1] = 0;
+            for (i = 2; i <= n; i++) {
+            int intval;
+            cin >> intval;
+            arrive_time[i] = arrive_time[i - 1] + intval;
+        }
+        for (i = 1; i <= p ; i++) {
+            int station, get_time;
+            cin >> station >> get_time;
+            wait_zero_start_time[i] = get_time - arrive_time[station];
+        }
+        sort(wait_zero_start_time + 1, wait_zero_start_time + p + 1);
+        memset(dp, oo, sizeof(dp));
+        dp[0][0] = 0;
+        for (j = 1; j <= m; j++) {
+            for (i = 0; i < p; i++) {
+                for (k = i + 1; k <= p; k++) {
+                    int newsum = 0;
+                    for (int tmp = i + 1; tmp <= k; tmp++) {
+                        newsum += wait_zero_start_time[k] - wait_zero_start_time[tmp];
+                    }
+                    dp[k][j] = min(dp[k][j], dp[i][j - 1] + newsum);
+                }
+            }
+        }
+        cout << dp[p][m] << endl;
+        }
+}
