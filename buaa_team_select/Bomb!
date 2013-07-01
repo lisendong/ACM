@@ -1,0 +1,65 @@
+#include <iostream>
+#include <iomanip>
+#include <fstream>
+#include <cmath>
+#include <algorithm>
+#include <cstdlib>
+#include <string>
+#define oo 10000000
+using namespace std;
+double point[600][2];
+//int visit[600];
+double dis[600];
+int visit[600];
+int T, N;
+double get_dis(int p, int q) {
+  double x = point[p][0] - point[q][0];
+	double y = point[p][1] - point[q][1];
+	return sqrt(x * x + y * y);
+}
+int find_min() {
+	int min_dis = oo, min_i, i;
+	for (i = 0; i <= N; i++) {
+		if (visit[i] == 0 && dis[i] < min_dis) {
+			min_dis = dis[i];
+			min_i = i;
+		}
+	}
+	return min_i;
+}
+double max(double a, double b) {
+	return a > b ? a : b;
+}
+void djs(int p) {
+	int i;
+	for (i = 0; i <= N; i++) {
+		float dist = get_dis(i, p);
+		if (max(dist, dis[p]) < dis[i]) {
+			dis[i] = max(dist, dis[p]);
+		}
+	}
+}
+int main() {
+	cin >> T;
+	int i, j;
+	for (i = 0; i < T; i++) {
+		cin >> point[0][0] >> point[0][1];
+		cin >> N;
+		for (j = 1; j <= N; j++) {
+			cin >> point[j][0] >> point[j][1];
+		}
+		int l, m, n;
+		for (j = 0; j <= N; j++) {
+			dis[j] = get_dis(j, 1);
+			visit[j] = 0;
+		}
+		visit[1] = 1;
+		for (l = 1; l <= N; l++) {
+			m = find_min();
+			visit[m] = 1;
+			djs(m);
+		}
+		cout << setprecision(2) << setiosflags(ios::fixed  | ios::showpoint)<< dis[0] << endl;
+	}
+	return 0;
+}
