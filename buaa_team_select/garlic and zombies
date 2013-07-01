@@ -1,0 +1,30 @@
+#include <iostream>
+#include <iomanip>
+#include <fstream>
+#include <cmath>
+#include <algorithm>
+#include <cstdlib>
+#include <string>
+#define oo 10010
+using namespace std;
+float a[oo][6] = {0};
+int main() {
+  int i;
+	a[0][3] = 1;
+	for (i = 1; i <= 10000; i++) {
+		a[i][1] = a[i - 1][2] * 0.5;
+		a[i][2] = a[i - 1][1] + a[i-1][3] * 0.5;
+		a[i][3] = a[i-1][2] * 0.5+a[i-1][4] * 0.5;
+		a[i][4] = a[i-1][3] * 0.5+a[i-1][5];
+		a[i][5] = a[i-1][4] * 0.5;
+	}
+	int N;
+	while (cin >> N) {
+		for (i = 1; i <= 5; i++) {
+			if (i != 1) cout << " ";
+			cout << setprecision(2)<<setiosflags(ios::fixed  | ios::showpoint) << a[N][i];
+		}
+		cout << endl;
+	}
+	return 0;
+}
