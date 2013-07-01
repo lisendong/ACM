@@ -1,0 +1,61 @@
+#include<iostream>
+#include<algorithm>
+#include<cstdlib>
+#include<cstdio>
+#include<cstring>
+#include<cmath>
+#define oo 1000000000
+using namespace std;
+typedef struct task {
+    int p, v;
+} Task;
+Task t[50];
+int lt[50] = {0};
+int min_total_p;
+int total_p = 0, total_v = 0;
+int N, K;
+void dfs(int step, int sum_p, int sum_v, int min_no_use) {
+    if (sum_v >= K) {
+        if (sum_p < min_total_p) {
+            min_total_p = sum_p;
+        }
+        return;
+    }
+    if (total_v - lt[step - 1] + sum_v < K) return; 
+    if (sum_p >= min_total_p) return;
+    if (t[step].p < min_no_use) {
+        dfs(step + 1, sum_p + t[step].p, sum_v + t[step].v, min_no_use);
+    }
+    dfs(step + 1, sum_p, sum_v, min(min_no_use, t[step].p));
+}
+bool cmp(const Task a, const Task b) {
+    return a.v > b.v;
+}
+int main()
+{
+    while (EOF != scanf("%d%d", &N, &K)) {
+        int i;
+        min_total_p = oo;
+        total_p = 0; total_v = 0;
+        memset(lt, 0, sizeof(lt));
+        for (i = 1; i <= N; i++) {
+            scanf("%d", &t[i].p);
+            total_p += t[i].p;
+        }
+        for (i = 1; i <= N; i++) {
+            scanf("%d", &t[i].v);
+            total_v += t[i].v;
+            //lt[i] = lt[i - 1] + t[i].v;
+        }
+        if (total_v < K) cout << -1 << endl;
+        else if(total_v == K) cout << total_p << endl; 
+        else {
+            sort(t + 1, t + 1 + N, cmp);
+            for (i = 1; i <= N; i++) {
+                lt[i] = lt[i - 1] + t[i].v;
+            }
+            dfs(1, 0, 0, oo);
+            cout << min_total_p << endl;
+        }
+    }
+}
