@@ -1,0 +1,52 @@
+#include <iostream>
+#include <fstream>
+#include <cmath>
+#include <algorithm>
+#include <cstdlib>
+#include <string>
+using namespace std;
+typedef struct clothes {
+  int ocupy, need;
+} Clothes;
+Clothes c1[2000];Clothes c2[2000];
+int cmp1(const void *a, const void *b) {
+	if(((Clothes*)a)->need - ((Clothes*)b)->need == 0) {
+		return ((Clothes*)a)->ocupy - ((Clothes*)b)->ocupy;
+	}
+	return ((Clothes*)b)->need - ((Clothes*)a)->need;
+	//return ((Clothes*)a)->ocupy - ((Clothes*)b)->ocupy;
+}
+int cmp2(const void *a, const void *b) {
+	if(((Clothes*)a)->ocupy - ((Clothes*)b)->ocupy == 0) {
+		return ((Clothes*)b)->need - ((Clothes*)a)->need;
+	}
+	return ((Clothes*)a)->ocupy - ((Clothes*)b)->ocupy;
+	//return ((Clothes*)a)->ocupy - ((Clothes*)b)->ocupy;
+}
+int main() {
+	int V, N, i, j;
+	while(cin >> V) {
+		int v1 = V, v2 = V;
+		cin >> N;
+		for (i = 0; i < N; i++) {
+			cin >> c1[i].ocupy >> c1[i].need;
+			c2[i].ocupy = c1[i].ocupy;
+			c2[i].need = c1[i].need;
+		}
+		qsort(c1, N, sizeof(Clothes), cmp1);
+		qsort(c2, N, sizeof(Clothes), cmp2);
+		for (i = 0; i < N; i++) {
+			//cout << c1[i].ocupy << ":" << c1[i].need << endl;
+			if (c1[i].need > v1) break;
+			v1 -= c1[i].ocupy;
+		}
+		for (j = 0; j < N; j++) {
+			//cout << c1[i].ocupy << ":" << c1[i].need << endl;
+			if (c2[j].need > v2) break;
+			v2 -= c2[j].ocupy;
+		}
+		if (i == N || j == N) cout << "YES" << endl;
+		else cout << "NO" << endl;
+	}
+	return 0;
+}
