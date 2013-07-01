@@ -1,0 +1,36 @@
+#include<iostream>
+#include<algorithm>
+#include<cstdlib>
+#include<cstdio>
+#include<cstring>
+#include<cmath>
+using namespace std;
+typedef struct box {
+    int width, num;
+} Box;
+Box b[60000];
+int main()
+{
+        int T;
+        cin >> T;
+        while(T--)
+        {
+        int n, i;
+        cin >> n;
+        for (i = 1; i <= n; i++) {
+            cin >> b[i].width;
+        }
+        for (i = 1; i <= n; i++) {
+            cin >> b[i].num;
+        }
+        int max_width = 0;
+        for (i = 1; i <= n; i++) {
+            int neednum = ceil(log(b[i].num) / log(8));
+            
+            if (b[i].width + neednum > max_width) {
+                max_width = b[i].width + neednum;
+            }
+        }
+        cout << max_width << endl;
+        }
+}
