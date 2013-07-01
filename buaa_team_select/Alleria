@@ -1,0 +1,53 @@
+#include<iostream>
+#include<algorithm>
+#include<cstdlib>
+#include<cstdio>
+#include<cstring>
+#include<cmath>
+#define PI 3.141592653
+const double cos25 = cos(25 * PI / 180);
+using namespace std;
+double get_mo(double x, double y) {
+    return sqrt(x * x + y * y);
+}
+int main()
+{
+        int T;
+    scanf("%d", &T);
+        while(T--)
+        {
+        int x1, y1, x2, y2, x3, y3;
+        //cin >> x1 >> y1 >> x2 >> y2 >> x3 >> y3;
+        scanf("%d%d%d%d%d%d", &x1, &y1, &x2, &y2, &x3, &y3);
+        double v1_x = x2 - x1, v1_y = y2 - y1;
+        double v2_x = x3 - x2, v2_y = y3 - y2;
+        double angle = (v1_x * v2_x + v1_y * v2_y) / (get_mo(v1_x, v1_y) * get_mo(v2_x, v2_y));
+        angle = angle >= 0 ? angle : -angle;
+        if (angle >= cos25) {
+        //    cout << angle << endl;
+            int floor, top, left, right;
+            if (x2 > x1 && y2 > y1) {
+                left = x2; floor = y2; right = x2 + 50; top = y2 + 50;
+            }
+            if (x2 < x1 && y2 > y1) {
+                left = x2 - 50; floor = y2; right = x2; top = y2 + 50;
+            }
+            if (x2 < x1 && y2 < y1) {
+                left = x2 - 50; floor = y2 - 50; right = x2; top = y2;
+            }
+            if (x2 > x1 && y2 < y1) {
+                left = x2; floor = y2 - 50; right = x2 + 50; top = y2;
+            }
+//            cout << left << ":" << right << ":" << floor << ":" << top << ":" << endl;
+            if (x3 >= left && x3 <= right && y3 >= floor && y3 <= top) {
+                cout << "YES" << endl;
+            }
+            else {
+                cout << "NO" << endl;
+            }
+        }
+        else {
+            cout << "NO" << endl;
+        }
+        }
+}
