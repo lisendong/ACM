@@ -1,0 +1,54 @@
+#include<iostream>
+#include<string>
+using namespace std;
+int main()
+{
+    int t,sum,dg,mod;
+    string num;
+    cin>>t;
+    while(t--)
+    {
+        cin>>num;
+        dg=num.length();
+        for(int i=dg; i>=1; i--)
+            num[i]=num[i-1];
+        num[0]='0';
+        sum=0;
+        for(int i=1; i<=dg; i++)
+            sum+=num[i]-'0';
+        num[dg]++;
+        sum++;
+        while(num[dg]>'9')
+        {
+            sum-=num[dg]-'0';
+            num[dg--]='0';
+            num[dg]++;
+            sum++;
+        }
+        mod=sum%10;
+        while(mod)
+        {
+            dg=num.length();
+            if(num[dg]-'0'<mod)
+            {
+                num[dg]+=10-mod;
+                break;
+            }
+            do
+            {
+                sum-=num[dg]-'0';
+                num[dg--]='0';
+                num[dg]++;
+                sum++;
+            }
+            while(num[dg]>'9');
+            mod=sum%10;
+        }
+        int i=0;
+        if(num[0]=='0')
+            i=1;
+        for(; i<=num.length(); i++)
+            cout<<num[i];
+        cout<<endl;
+    }
+}
