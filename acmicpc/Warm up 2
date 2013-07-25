@@ -1,0 +1,91 @@
+#include<iostream>
+#include<cstdio>
+#include<cmath>
+#include<cstring>
+#include <algorithm>
+using namespace std;
+int f[11020];
+int g[11020];
+int h[11020];
+int find(int v)
+{
+    int p,q;
+    p=v;
+    while (f[p]!=p)
+    {
+          p=f[p];
+    }
+    q=v;
+    while (f[q]!=q)
+    {
+          int r=q;
+          q=f[q];
+          f[r]=p;
+    }
+    return p;
+}
+int main()
+{
+    while (1)
+    {
+          int n,m;
+          cin>>n>>m;
+          if ((n==0)&&(m==0))
+          {
+             break;
+          }
+          for (int i=0;i<11010;++i)
+            f[i]=i;
+          memset(h,0,sizeof(h));
+          memset(g,0,sizeof(g));
+          for (int i=0;i<n;++i)
+          {
+              int p,q;
+              cin>>p>>q;
+              int s=102*p+q;
+              int x,y;
+              x=find(s);
+              y=find(s+102);
+              if (x==y)
+              {h[x]=1;}
+              f[y]=x;
+              y=find(s+102);
+          }
+          for (int i=0;i<m;++i)
+          {
+              int p,q;
+              cin>>p>>q;
+              int s=102*p+q;
+              int x,y;
+              x=find(s);
+              y=find(s+1);
+              if (x==y)
+              {h[x]=1;}
+              f[y]=x;
+              y=find(s+1);
+          }
+          for (int i=0;i<11010;++i)
+          {
+              int u=find(i);
+              g[u]+=1;
+              if (h[i]>0)
+              {
+                h[u]=1;
+              }
+          }
+          int ans=0;
+          for (int i=0;i<11010;++i)
+          {
+            if (f[i]==i)
+            {
+              int k=g[i];
+              if (!h[i]) --k;
+              else ++k;
+              ans+=k/2;
+            } 
+          }
+          ans=n+m-ans;
+          cout<<ans<<endl;
+    }
+    return 0;
+}
