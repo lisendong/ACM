@@ -1,0 +1,61 @@
+#include<iostream>
+#define oo 1000000007
+using namespace std;
+long long co(long long t)
+{
+    if(t==0)
+        return 1;
+    if(t==1)
+        return 2;
+    long long r,s;
+    r=t/2;
+    s=co(r);
+    s=s%oo;
+    s=s*s;
+    s=s%oo;
+    if((t%2)>0)
+        s=(s*2)%oo;
+    return s;
+}
+long long cal(long long n)
+{
+    long long ans,k,s;
+    s=co(n-3);
+    k=4*s;
+    ans=(n-2)%oo;
+    ans=(ans*s)%oo;
+    ans=k+ans;
+    ans=ans%oo;
+    if(ans<0)
+        ans+=oo;
+    return ans;
+}
+int main()
+{
+    int T;
+    cin >> T;
+    while (T--)
+    {
+        long long n,k,ans;
+        cin>>n>>k;
+        long long p=n-k+1;
+        if(p<0)
+            p=0;
+        switch(p)
+        {
+        case 0:
+            ans=0;
+            break;
+        case 1:
+            ans=1;
+            break;
+        case 2:
+            ans=2;
+            break;
+        default:
+            ans=cal(p);
+        }
+        cout<<ans<<endl;
+    }
+    return 0;
+}
