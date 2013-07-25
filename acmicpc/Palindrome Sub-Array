@@ -1,0 +1,101 @@
+#include<iostream>
+#include<fstream>
+#include<algorithm>
+#include<assert.h>
+#include<cstdlib>
+#include<cstdio>
+#include<cstring>
+#include<cmath>
+#include<string>
+#include<stack>
+#include<queue>
+#include<list>
+#include<vector>
+#define oo 1000000007
+#define MAXN 50010
+using namespace std;
+struct squre {
+    int x1, y1, x2, y2;
+};
+queue<squre> q;
+int data[310][310];
+bool check_row(int row, int left, int right) {
+    while (left <= right) {
+        if (data[row][left] != data[row][right]) return false;
+        left++;
+        right--;
+    }
+    return true;
+}
+bool check_col(int col, int high, int bottom) {
+    while (high <= bottom) {
+        if (data[high][col] != data[bottom][col]) return false;
+        high++;
+        bottom--;
+    }
+    return true;
+}
+int main() {
+    int T;
+    int N, M;
+    scanf("%d", &T);
+    while (T--) {
+        scanf("%d%d", &N, &M);
+        int i, j;
+        for (i = 1; i <= N; i++) {
+            for (j = 1; j <= M; j++) {
+                scanf("%d", &data[i][j]);
+            }
+        }
+        for (i = 1; i <= N; i++) {
+            for (j = 1; j <= M; j++) {
+                squre tmp;
+                tmp.x1 = tmp.x2 = i;
+                tmp.y1 = tmp.y2 = j; 
+                q.push(tmp);
+            }
+        }
+        for (i = 1; i <= N - 1; i++) {
+            for (j = 1; j <= M - 1; j++) {
+                if (data[i][j] == data[i+1][j] && data[i][j] == data[i][j+1] && data[i][j] == data[i+1][j+1]) {
+                    squre tmp;
+                    tmp.x1 = i;
+                    tmp.y1 = j;
+                    tmp.x2 = i+1;
+                    tmp.y2 = j+1;
+                    q.push(tmp);
+                }
+            }
+        }
+        int max = 0;
+        int count = 0;
+        while (q.size() > 0) {
+            //cout << max << endl;
+            squre tmp = q.front();
+            q.pop();
+            count++;
+            if (tmp.x2 - tmp.x1 + 1 > max) max = tmp.x2 - tmp.x1 + 1;
+            if (tmp.x1 > 1 && tmp.y1 > 1 && tmp.x2 < N && tmp.y2 < M) {
+                int i;
+                for (i = tmp.x1; i <= tmp.x2; i++) {
+                    if (data[i][tmp.y1-1] != data[i][tmp.y2+1]) continue;
+                }
+                for (i = tmp.y1; i <= tmp.y2; i++) {
+                    if (data[tmp.x1 -1][i] != data[tmp.x2+1][i]) continue;
+                }
+                if (!check_row(tmp.x1 - 1, tmp.y1 - 1, tmp.y2+1)) continue;
+                if (!check_row(tmp.x2 + 1, tmp.y1 - 1, tmp.y2+1)) continue;
+                if (!check_col(tmp.y1 - 1, tmp.x1 - 1, tmp.x2+1)) continue;
+                if (!check_col(tmp.y2 + 1, tmp.x1 - 1, tmp.x2+1)) continue;
+                squre newtmp;
+                newtmp.x1 = tmp.x1 - 1;newtmp.x2 = tmp.x2 + 1;
+                newtmp.y1 = tmp.y1 - 1;newtmp.y2 = tmp.y2 + 1;
+                q.push(newtmp);
+                
+            }
+        }
+        cout << max << endl;
+        //cout << count << endl;
+    }
+
+}
