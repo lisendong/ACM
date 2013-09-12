@@ -43,7 +43,7 @@ bool dfs(int p, int step) {
         out << endl;
         return true;
     }
-    if (p >= 3 && data[p-2] == 1 && data[p-1] == 2) {
+    if (p >= 3 && data[p-2] == 1 && data[p-1] == 2) { //please ensure that only move w rightly or b leftly, or the recursive will be infinite
         result[step] = p-2;
         data[p] = data[p-2];
         data[p-2] = 0;
@@ -83,7 +83,7 @@ bool dfs(int p, int step) {
         data[p+2] = data[p];
         data[p] = 0;
     }
-    return false;
+    return false; // please add this return , or the function will return true automatically
 }
 int main()
 {
